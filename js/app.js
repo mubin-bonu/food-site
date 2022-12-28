@@ -44,10 +44,10 @@ tabsParent.addEventListener("click", (event) => {
 
 let currSlide = 0;
 setInterval(() => {
-    if (currSlide < 3) {
-        currSlide++
+    if (currSlide <= 3) {
         hideTabContent()
         showTabContent(currSlide)
+        currSlide++
     } else {
         currSlide = 0
         hideTabContent()
@@ -65,8 +65,9 @@ const openModal = () => {
     document.body.style.overflow = "hidden"
 
 }
-
 modalTrigger.addEventListener("click", openModal)
+
+
 
 const closeModal = () => {
     modal.classList.add("hide")
@@ -82,10 +83,53 @@ window.onscroll = () => {
         openModal();
     }
 }
-
 document.body.addEventListener('click', (e) => {
    if (e.target.classList.contains('show')) {
        closeModal();
    }
 });
 
+const message = {
+    loading: "Идет загрузка...",
+    success:"Спасибо, скоро свяжемся",
+    fail:"Что-то пошло не так"
+}
+
+const forms = document.querySelectorAll("form")
+const postData = (form) => {
+    form.addEventListener("submit", (e) =>{
+        e.preventDefault()
+
+        const messageBlock = document.createElement("div")
+        messageBlock.textContent = message.loading
+        form.append(messageBlock)
+
+        const request = new XMLHttpRequest()
+        request.open("POST","server.php")
+        request.setRequestHeader("Content-type","application/json")
+
+        const formData = new FormData(form)
+        const object ={}
+
+        formData.forEach((item,i) => {
+            const arr = [item,i]
+            console.log(arr)
+            object[i] = item
+        })
+        console.log(object)
+        const json = JSON.stringify(object)
+        request.send(json)
+        request.addEventListener("load", ()=>{
+            if (request.status === 200) {
+                console.log("ok")
+                messageBlock.textContent = message.success
+            }else {
+                console.log("not ok")
+                messageBlock.textContent = message.fail
+            }
+        })
+    })
+}
+forms.forEach((item) => {
+    postData(item)
+})
