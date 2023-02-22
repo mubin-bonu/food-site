@@ -84,9 +84,9 @@ window.onscroll = () => {
     }
 }
 document.body.addEventListener('click', (e) => {
-   if (e.target.classList.contains('show')) {
-       closeModal();
-   }
+    if (e.target.classList.contains('show')) {
+        closeModal();
+    }
 });
 
 const message = {
