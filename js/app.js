@@ -68,26 +68,12 @@ const openModal = () => {
 modalTrigger.addEventListener("click", openModal)
 
 
-
 const closeModal = () => {
     modal.classList.add("hide")
     modal.classList.remove("show")
     document.body.style.overflow = ""
 }
 closeModalBtn.addEventListener('click',closeModal);
-
-let isModalOpened = false
-window.onscroll = () => {
-    if (document.documentElement.scrollTop >= 3400 && isModalOpened === false) {
-        isModalOpened = true
-        openModal();
-    }
-}
-document.body.addEventListener('click', (e) => {
-    if (e.target.classList.contains('show')) {
-        closeModal();
-    }
-});
 
 const message = {
     loading: "Идет загрузка...",
@@ -121,10 +107,10 @@ const postData = (form) => {
         request.send(json)
         request.addEventListener("load", ()=>{
             if (request.status === 200) {
-                console.log("ok")
+                console.log("good")
                 messageBlock.textContent = message.success
             }else {
-                console.log("not ok")
+                console.log("bad")
                 messageBlock.textContent = message.fail
             }
         })
